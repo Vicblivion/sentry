@@ -1,13 +1,20 @@
 package org.example;
 
-public class Processors {
-    private String[] subnodes;
+import java.util.ArrayList;
+import java.util.List;
 
-    public String[] getSubnodes() {
+public class Processors {
+    private List<String> subnodes = new ArrayList<>();
+
+    public List<String> getSubnodes() {
         return subnodes;
     }
 
     public void setSubnodes(String[] subnodes) {
-        this.subnodes = subnodes;
+        for (String subnode : subnodes) {
+            if (!subnode.equals("CPU__Total")) {
+                this.subnodes.add(subnode);
+            }
+        }
     }
 }
