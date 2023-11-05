@@ -9,29 +9,33 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/processors/CPUprcrProcessorTimePercent")
 public class Controller {
     private final RestTemplate restTemplate;
+    private final Service service;
 
     @Autowired
-    public Controller (RestTemplate restTemplate) {
+    public Controller (RestTemplate restTemplate, Service service) {
         this.restTemplate = restTemplate;
+        this.service = service;
     }
 
     @GetMapping("/max")
     public void getMaxValue (@RequestParam("history") int history) {
-
+        List<History> histories = service.getMaxValue(history);
     }
 
     @GetMapping("/min")
     public void getMinValue (@RequestParam("history") int history) {
-
+        List<History> histories = service.getMinValue(history);
     }
 
     @GetMapping("/avg")
     public void getAvgValue (@RequestParam("history") int history) {
-
+        List<History> histories = service.getAvgValue(history);
     }
 
     /**

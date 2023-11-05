@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.models.History;
+import org.example.models.Processors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 
@@ -16,6 +17,45 @@ public class Service {
     @Autowired
     public Service(Controller controller) {
         this.controller = controller;
+    }
+
+    /**
+     * Get max value for each processor.
+     * @param history Number of HistoryValue.
+     */
+    public List<History> getMaxValue(int history) {
+        Processors processors = controller.getProcessors();
+        List<History> histories = getHistories(processors.getSubnodes(), history);
+        for (History hist : histories) {
+            hist.setMaxValue();
+        }
+        return histories;
+    }
+
+    /**
+     * Get min value for each processor.
+     * @param history Number of HistoryValue.
+     */
+    public List<History> getMinValue(int history) {
+        Processors processors = controller.getProcessors();
+        List<History> histories = getHistories(processors.getSubnodes(), history);
+        for (History hist : histories) {
+            hist.setMinValue();
+        }
+        return histories;
+    }
+
+    /**
+     * Get max value for each processor.
+     * @param history Number of HistoryValue.
+     */
+    public List<History> getAvgValue(int history) {
+        Processors processors = controller.getProcessors();
+        List<History> histories = getHistories(processors.getSubnodes(), history);
+        for (History hist : histories) {
+            hist.setAvgValue();
+        }
+        return histories;
     }
 
     /**
