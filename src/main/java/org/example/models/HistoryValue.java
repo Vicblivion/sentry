@@ -1,6 +1,6 @@
 package org.example.models;
 
-public class HistoryValues {
+public class HistoryValue {
     private float value;
     private long timestamp;
 

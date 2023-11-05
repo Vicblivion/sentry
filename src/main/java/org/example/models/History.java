@@ -4,13 +4,13 @@ import java.util.List;
 
 public class History {
     private String id;
-    private List<HistoryValues> history;
+    private List<HistoryValue> history;
 
-    public List<HistoryValues> getHistory() {
+    public List<HistoryValue> getHistory() {
         return history;
     }
 
-    public void setHistory(List<HistoryValues> history) {
+    public void setHistory(List<HistoryValue> history) {
         this.history = history;
     }
 
