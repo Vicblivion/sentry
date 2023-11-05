@@ -5,19 +5,22 @@ import org.example.models.Processors;
 import org.example.models.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 @org.springframework.stereotype.Service
 public class Service {
-    private final Controller controller;
+    private final RestTemplate restTemplate;
 
     @Autowired
-    public Service(Controller controller) {
-        this.controller = controller;
+    public Service(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
     /**
@@ -26,11 +29,13 @@ public class Service {
      */
     public List<Response> getMaxValue(int history) {
         List<Response> responses = new ArrayList<>();
-        Processors processors = controller.getProcessors();
+        Processors processors = getProcessors();
         List<History> histories = getHistories(processors.getSubnodes(), history);
         for (History hist : histories) {
             responses.add(new Response(hist.getId(), hist.getMaxValue()));
         }
+        Collections.sort(responses, Comparator.comparing(Response::getValue));
+        Collections.reverse(responses);
         return responses;
     }
 
@@ -40,11 +45,13 @@ public class Service {
      */
     public List<Response> getMinValue(int history) {
         List<Response> responses = new ArrayList<>();
-        Processors processors = controller.getProcessors();
+        Processors processors = getProcessors();
         List<History> histories = getHistories(processors.getSubnodes(), history);
         for (History hist : histories) {
             responses.add(new Response(hist.getId(), hist.getMinValue()));
         }
+        Collections.sort(responses, Comparator.comparing(Response::getValue));
+        Collections.reverse(responses);
         return responses;
     }
 
@@ -54,11 +61,13 @@ public class Service {
      */
     public List<Response> getAvgValue(int history) {
         List<Response> responses = new ArrayList<>();
-        Processors processors = controller.getProcessors();
+        Processors processors = getProcessors();
         List<History> histories = getHistories(processors.getSubnodes(), history);
         for (History hist : histories) {
             responses.add(new Response(hist.getId(), hist.getAvgValue()));
         }
+        Collections.sort(responses, Comparator.comparing(Response::getValue));
+        Collections.reverse(responses);
         return responses;
     }
 
@@ -91,6 +100,16 @@ public class Service {
      */
     @Async
     public CompletableFuture<History> getHistoryValues(String id, int history) {
-        return CompletableFuture.completedFuture(controller.getHistoryValues(id, history));
+        History hist = restTemplate.getForObject("https://xdemo.sentrysoftware.com/rest/console/NT_CPU/" + id + "/CPUprcrProcessorTimePercent?max=" + history, History.class);
+        hist.setId(id);
+        return CompletableFuture.completedFuture(hist);
+    }
+
+    /**
+     * Retrieve processors data.
+     * @return A Processors object.
+     */
+    public Processors getProcessors() {
+        return restTemplate.getForObject("https://xdemo.sentrysoftware.com/rest/namespace/NT_CPU", Processors.class);
     }
 }
