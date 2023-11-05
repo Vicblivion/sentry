@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class ControllerTest {
@@ -25,5 +25,14 @@ public class ControllerTest {
     @Test
     public void testGetProcessors() {
         assertTrue(subnodes.equals(controller.getProcessors().getSubnodes()));
+    }
+
+    /**
+     * Check if historyValues are retrieved correctly.
+     */
+    @Test
+    public void testGetHistoryValues() {
+        assertNotNull(controller.getHistoryValues("CPU_0", 10));
+        assertNotNull(controller.getHistoryValues("CPU_1", 10));
     }
 }
