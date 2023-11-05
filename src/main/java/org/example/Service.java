@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.models.History;
 import org.example.models.Processors;
+import org.example.models.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 
@@ -23,39 +24,42 @@ public class Service {
      * Get max value for each processor.
      * @param history Number of HistoryValue.
      */
-    public List<History> getMaxValue(int history) {
+    public List<Response> getMaxValue(int history) {
+        List<Response> responses = new ArrayList<>();
         Processors processors = controller.getProcessors();
         List<History> histories = getHistories(processors.getSubnodes(), history);
         for (History hist : histories) {
-            hist.setMaxValue();
+            responses.add(new Response(hist.getId(), hist.getMaxValue()));
         }
-        return histories;
+        return responses;
     }
 
     /**
      * Get min value for each processor.
      * @param history Number of HistoryValue.
      */
-    public List<History> getMinValue(int history) {
+    public List<Response> getMinValue(int history) {
+        List<Response> responses = new ArrayList<>();
         Processors processors = controller.getProcessors();
         List<History> histories = getHistories(processors.getSubnodes(), history);
         for (History hist : histories) {
-            hist.setMinValue();
+            responses.add(new Response(hist.getId(), hist.getMinValue()));
         }
-        return histories;
+        return responses;
     }
 
     /**
      * Get max value for each processor.
      * @param history Number of HistoryValue.
      */
-    public List<History> getAvgValue(int history) {
+    public List<Response> getAvgValue(int history) {
+        List<Response> responses = new ArrayList<>();
         Processors processors = controller.getProcessors();
         List<History> histories = getHistories(processors.getSubnodes(), history);
         for (History hist : histories) {
-            hist.setAvgValue();
+            responses.add(new Response(hist.getId(), hist.getAvgValue()));
         }
-        return histories;
+        return responses;
     }
 
     /**

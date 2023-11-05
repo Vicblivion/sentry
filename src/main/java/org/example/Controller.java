@@ -2,7 +2,10 @@ package org.example;
 
 import org.example.models.History;
 import org.example.models.Processors;
+import org.example.models.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,18 +27,18 @@ public class Controller {
     }
 
     @GetMapping("/max")
-    public void getMaxValue (@RequestParam("history") int history) {
-        List<History> histories = service.getMaxValue(history);
+    public ResponseEntity<List<Response>> getMaxValue (@RequestParam("history") int history) {
+        return new ResponseEntity<>(service.getMaxValue(history), HttpStatus.OK);
     }
 
     @GetMapping("/min")
-    public void getMinValue (@RequestParam("history") int history) {
-        List<History> histories = service.getMinValue(history);
+    public ResponseEntity<List<Response>> getMinValue (@RequestParam("history") int history) {
+        return new ResponseEntity<>(service.getMinValue(history), HttpStatus.OK);
     }
 
     @GetMapping("/avg")
-    public void getAvgValue (@RequestParam("history") int history) {
-        List<History> histories = service.getAvgValue(history);
+    public ResponseEntity<List<Response>> getAvgValue (@RequestParam("history") int history) {
+        return new ResponseEntity<>(service.getAvgValue(history), HttpStatus.OK);
     }
 
     /**
