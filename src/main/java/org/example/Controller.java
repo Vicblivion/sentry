@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.models.History;
+import org.example.models.Processors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,5 +40,17 @@ public class Controller {
      */
     public Processors getProcessors() {
         return restTemplate.getForObject("https://xdemo.sentrysoftware.com/rest/namespace/NT_CPU", Processors.class);
+    }
+
+    /**
+     * Retrieve history values for a given processor.
+     * @param id Processor's id.
+     * @param history Number of history values requested.
+     * @return A History object.
+     */
+    public History getHistoryValues(String id, int history) {
+        History hist = restTemplate.getForObject("https://xdemo.sentrysoftware.com/rest/console/NT_CPU/" + id + "/CPUprcrProcessorTimePercent?max=" + history, History.class);
+        hist.setId(id);
+        return hist;
     }
 }
