@@ -34,37 +34,37 @@ public class History {
     /**
      * Put the max value into value.
      */
-    public void setMaxValue() {
+    public float getMaxValue() {
         float max = 0;
         for (HistoryValue h : this.history) {
             if (h.getValue() > max) {
                 max = h.getValue();
             }
         }
-        this.value = max;
+        return max;
     }
 
     /**
      * Put the min value into value.
      */
-    public void setMinValue() {
+    public float getMinValue() {
         float min = Float.MAX_VALUE;
         for (HistoryValue h : this.history) {
             if (h.getValue() < min) {
                 min = h.getValue();
             }
         }
-        this.value = min;
+        return min;
     }
 
     /**
      * Put the average value into value.
      */
-    public void setAvgValue() {
+    public float getAvgValue() {
         float avg = 0;
         for (HistoryValue h : this.history) {
             avg += h.getValue();
         }
-        this.value = avg/this.history.size();
+        return avg/this.history.size();
     }
 }
